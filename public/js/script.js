@@ -3,6 +3,8 @@
 const todo = document.querySelector("#todo");
 const category = document.querySelector("#category");
 const submit = document.querySelector("#submit");
+const form = document.querySelector("#todo-form");
+const errorMessage = document.querySelector("#error-message");
 
 /*
 if we are adding new entry then id stays 1 ,
@@ -97,9 +99,17 @@ parent.addEventListener("click", async function editDelete(e) {
 submit.addEventListener("click", async function (e) {
   e.preventDefault();
 
+  // Check if fields are empty
+  if (!todo.value.trim() || !category.value.trim()) {
+    errorMessage.style.display = "block";
+    return;
+  } else {
+    errorMessage.style.display = "none";
+  }
+
   //extract values from input Fields
   let text = todo.value;
-  console.log(text);
+  //console.log(text);
 
   let categoryValue = category.value;
   console.log(categoryValue);
@@ -109,7 +119,7 @@ submit.addEventListener("click", async function (e) {
     text,
     categoryValue,
   };
-  console.log(obj);
+  // console.log(obj);
 
   if (id === 1) {
     //if its fresh data , add it via an HTTP Post request

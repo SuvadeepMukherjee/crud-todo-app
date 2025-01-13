@@ -17,13 +17,21 @@
       <!-- <label for="price">Choose Price</label>
       <input type="text" id="price" /> -->
       <label for="dish">Enter a Todo</label>
-      <input type="text" id="todo" />
+      <input type="text" id="todo" placeholder="Write your todo..." required />
       <label for="category">Choose Category</label>
-      <input type="text" id="category" />
+      <input
+        type="text"
+        id="category"
+        placeholder="e.g. Work,Personal"
+        required
+      />
       <br />
       <br />
 
       <input type="submit" value="Submit Your todo" id="submit" />
+      <p id="error-message" style="color: red" display:none;>
+        Please fill out both fields.
+      </p>
     </form>
     <br />
     <br />

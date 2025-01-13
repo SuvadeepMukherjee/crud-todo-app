@@ -1,82 +1,18 @@
-/* General Styles */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f8f9fa;
-  color: #333;
-  text-align: center;
-}
-
-/* Header Styles */
-h2 {
-  color: #007bff;
-  font-size: 2rem;
-  margin-bottom: 20px;
-}
-
-/* Form Styles */
-form {
-  display: inline-block;
-  text-align: left;
-  padding: 20px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-form label {
-  display: block;
-  margin: 10px 0 5px;
-  font-weight: bold;
-}
-
-form input[type="text"],
-form select {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-form input[type="submit"] {
-  background-color: #007bff;
+#submit {
+  background-color: #4681f4;
   color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
 }
 
-form input[type="submit"]:hover {
-  background-color: #0056b3;
+.editbtn {
+  background-color: green;
+  color: white;
 }
 
-/* Display Section */
-#display {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
-  margin: 20px auto;
+.deletebtn {
+  background-color: red;
+  color: white;
 }
 
-/* Responsive Design */
-@media (max-width: 600px) {
-  form {
-    width: 90%;
-  }
-
-  #display {
-    width: 90%;
-  }
+p {
+  font-weight: bold;
 }
