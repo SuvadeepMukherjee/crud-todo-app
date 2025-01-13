@@ -17,10 +17,12 @@ module.exports.getTodos = async (req, res) => {
 module.exports.postTodos = async (req, res) => {
   try {
     console.log("Submit todos");
+    console.log(req.body);
+
     const todo = await Todo.create({
       text: req.body.text,
-      complete: req.body.complete,
-      category: req.body.category,
+      //complete: req.body.complete,
+      category: req.body.categoryValue,
     });
 
     const todos = await Todo.find();

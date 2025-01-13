@@ -4,22 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
-  <body>
-    <div class="container">
-      <h1>Todo App</h1>
-      <form id="todo-form">
-        <input type="text" id="todo-text" placeholder="Enter a todo" required />
-        <input
-          type="text"
-          id="todo-category"
-          placeholder="Category (optional)"
-        />
-        <button type="submit">Add Todo</button>
-      </form>
-      <ul id="todo-list"></ul>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <body style="text-align: center">
+    <br />
+    <br />
+    <h2>Todo App</h2>
+    <br />
+    <br />
+    <form>
+      <!-- <label for="price">Choose Price</label>
+      <input type="text" id="price" /> -->
+      <label for="dish">Enter a Todo</label>
+      <input type="text" id="todo" />
+      <label for="category">Choose Category</label>
+      <input type="text" id="category" />
+      <br />
+      <br />
+
+      <input type="submit" value="Submit Your todo" id="submit" />
+    </form>
+    <br />
+    <br />
+    <p>Your Todo</p>
+    <br />
+    <br />
+    <div id="display"></div>
     <script src="js/script.js"></script>
   </body>
 </html>

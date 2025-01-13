@@ -1,80 +1,122 @@
-const apiBase = "/api/todos";
-const todoForm = document.getElementById("todo-form");
-const todoList = document.getElementById("todo-list");
+// Select elements from the HTML document
 
-document.addEventListener("DOMContentLoaded", fetchTodos);
+const todo = document.querySelector("#todo");
+const category = document.querySelector("#category");
+const submit = document.querySelector("#submit");
 
-// Add a new todo
-todoForm.addEventListener("submit", async (e) => {
+/*
+if we are adding new entry then id stays 1 ,
+ if we edit then id takes the value of the event.target.id
+ */
+let id = 1;
+
+let url = "/api";
+
+/***********************************************************/
+//function to fetch data from storage
+/***********************************************************/
+async function getData() {
+  // Try to fetch dataObj from a specified URL using a get request
+  return await axios.get(`${url}/todos`);
+}
+
+/***********************************************************/
+//displaying data already available
+/***********************************************************/
+async function displayData() {
+  // Fetch dataObj asynchronously using the getData function
+  const dataObj = await getData();
+
+  /*
+  extract the data property from dataobj ,
+   it is an array of objects with _id,priceValue,dishValue and categoryValue*/
+  const dataArray = dataObj.data;
+  //console.log(dataArray);
+
+  // If the data array is null, return early
+  if (dataArray === null) return;
+
+  let html = "";
+  /*Loop through the data array and generate HTML elements for each item 
+  and add an id to the delete and edit button equal to _id property of the dataArray[i] object */
+  //console.log(dataArray);
+
+  for (let i = 0; i < dataArray.length; i++) {
+    html += `<div class ="child ${dataArray[i]._id}">
+    ${dataArray[i].text} ${dataArray[i].category} 
+    
+    <button class ="editbtn" id="${dataArray[i]._id}">Edit</button>
+    <button class ="deletebtn" id=${dataArray[i]._id}>Delete</button>
+    </div>`;
+  }
+  const display = document.querySelector("#display");
+  display.insertAdjacentHTML("afterbegin", html);
+}
+displayData();
+
+/***********************************************************/
+//Editing & Deleting
+/***********************************************************/
+const parent = document.querySelector("#display");
+// Event listener for editing or deleting data
+parent.addEventListener("click", async function editDelete(e) {
   e.preventDefault();
-  const text = document.getElementById("todo-text").value.trim();
-  const category = document.getElementById("todo-category").value.trim();
+  //retreive data from server
+  let dataObj = await getData();
+  let dataArray = dataObj.data;
 
-  if (text) {
-    try {
-      const response = await axios.post(apiBase, { text, category });
-      renderTodos(response.data);
-      todoForm.reset();
-    } catch (err) {
-      console.error("Error adding todo:", err);
-    }
+  //find the id of the element where the event occured
+  let eventId = e.target.id;
+  console.log(eventId);
+
+  //find the index of the clicked object in the data array
+  const index = dataArray.findIndex((object) => {
+    return object._id === e.target.id;
+  });
+  console.log(dataArray[index]);
+
+  if (e.target.className === "editbtn") {
+    //if editing populate form fields with the selected data for editing
+    todo.value = dataArray[index].text;
+
+    category.value = dataArray[index].category;
+    id = eventId;
+  }
+  if (e.target.className === "deletebtn") {
+    //delete request to delete requested resources on server
+    axios.delete(`${url}/todos/${e.target.id}`).then((response) => {
+      console.log(response);
+    });
+    location.reload();
   }
 });
 
-// Fetch and render todos
-async function fetchTodos() {
-  try {
-    const response = await axios.get(apiBase);
-    renderTodos(response.data);
-  } catch (err) {
-    console.error("Error fetching todos:", err);
+/***********************************************************/
+//listening to click on submit button
+/***********************************************************/
+submit.addEventListener("click", async function (e) {
+  e.preventDefault();
+
+  //extract values from input Fields
+  let text = todo.value;
+  console.log(text);
+
+  let categoryValue = category.value;
+  console.log(categoryValue);
+
+  //making an object of values received
+  let obj = {
+    text,
+    categoryValue,
+  };
+  console.log(obj);
+
+  if (id === 1) {
+    //if its fresh data , add it via an HTTP Post request
+    await axios.post(`${url}/todos`, obj).then((res) => console.log(res));
+  } else if (id !== 1) {
+    //if its an edit operation update the data via an HTTP Put request
+    await axios.put(`${url}/todos/${id}`, obj).then((res) => console.log(res));
   }
-}
-
-// Render todos to the DOM
-function renderTodos(todos) {
-  todoList.innerHTML = "";
-  todos.forEach((todo) => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <span>${todo.text} (${todo.category || "General"})</span>
-      <div class="actions">
-        <button onclick="editTodo('${todo._id}', '${todo.text}', '${
-      todo.category
-    }')">Edit</button>
-        <button onclick="deleteTodo('${todo._id}')">Delete</button>
-      </div>
-    `;
-    todoList.appendChild(li);
-  });
-}
-
-// Edit a todo
-async function editTodo(id, text, category) {
-  const newText = prompt("Edit todo text:", text);
-  const newCategory = prompt("Edit category:", category);
-
-  if (newText !== null) {
-    try {
-      const response = await axios.put(`${apiBase}/${id}`, {
-        text: newText,
-        category: newCategory || "General",
-      });
-      renderTodos(response.data);
-    } catch (err) {
-      console.error("Error editing todo:", err);
-    }
-  }
-}
-
-// Delete a todo
-async function deleteTodo(id) {
-  if (confirm("Are you sure you want to delete this todo?")) {
-    try {
-      const response = await axios.delete(`${apiBase}/${id}`);
-      renderTodos(response.data);
-    } catch (err) {
-      console.error("Error deleting todo:", err);
-    }
-  }
-}
+  location.reload();
+});
